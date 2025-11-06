@@ -208,6 +208,26 @@ function HomeContent() {
   const router = useRouter();
   const [currentView, setCurrentView] = useState<'contact' | 'government' | 'health' | 'citizen' | 'bancassurance' | 'knowledge' | 'settings'>('contact');
 
+  // Log NAV_ITEMS on mount
+  useEffect(() => {
+    console.log('=== COMPONENT MOUNTED ===');
+    console.log('NAV_ITEMS mapping:', NAV_ITEMS.map((item, idx) => ({
+      index: idx,
+      key: item.key,
+      label: item.label
+    })));
+  }, []);
+
+  // Track currentView changes
+  useEffect(() => {
+    console.log('STATE CHANGE: currentView updated to:', currentView);
+  }, [currentView]);
+
+  // Track selectedNav changes
+  useEffect(() => {
+    console.log('STATE CHANGE: selectedNav updated to:', selectedNav);
+  }, [selectedNav]);
+
   // Handle URL-based navigation
   useEffect(() => {
     const view = searchParams.get('view');
@@ -2241,7 +2261,10 @@ ${customPrompt}`,
               {NAV_ITEMS.map((item, idx) => (
                 <button
                   key={item.label}
-                  onClick={() => handleNavigation(idx, item.key)}
+                  onClick={() => {
+                    console.log('BUTTON CLICKED:', { idx, key: item.key, label: item.label });
+                    handleNavigation(idx, item.key);
+                  }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                     selectedNav === idx
                       ? 'bg-gray-800 text-white shadow-lg border-2 border-transparent bg-clip-padding relative'
@@ -2384,13 +2407,22 @@ ${customPrompt}`,
 
         {/* Column 3: Chat Area, Knowledge Base, or Settings */}
         <main className="flex-1 flex flex-col bg-white">
-          {currentView === 'contact' ? (
-            /* Government Control Tower Dashboard */
-            <ContactCenterDashboard />
-          ) : currentView === 'citizen' ? (
-            /* Citizen Services */
-            <CitizenServicesInterface />
-          ) : currentView === 'knowledge' ? (
+          {(() => {
+            console.log('RENDERING: currentView =', currentView, 'selectedNav =', selectedNav);
+            
+            if (currentView === 'contact') {
+              console.log('RENDERING: ContactCenterDashboard');
+              return <ContactCenterDashboard />;
+            } else if (currentView === 'citizen') {
+              console.log('RENDERING: CitizenServicesInterface');
+              return <CitizenServicesInterface />;
+            } else if (currentView === 'knowledge') {
+              console.log('RENDERING: Knowledge Base');
+              return null; // Will be replaced with knowledge base JSX below
+            }
+            return null;
+          })()}
+          {currentView === 'knowledge' ? (
             /* Knowledge Base Panel */
             <div className="flex-1 p-6">
               <div className="max-w-4xl">
