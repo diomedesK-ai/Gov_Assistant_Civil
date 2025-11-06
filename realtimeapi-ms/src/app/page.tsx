@@ -2231,17 +2231,19 @@ ${customPrompt}`,
         <SplashScreen onClose={handleCloseSplash} />
       )}
       
-      {/* DEBUG PANEL */}
-      <div className="fixed top-4 left-4 z-[9999] bg-black/90 text-white p-4 rounded-lg text-xs font-mono max-w-md">
-        <div className="font-bold mb-2 text-yellow-400">🐛 DEBUG INFO</div>
-        <div>currentView: <span className="text-green-400">{currentView}</span></div>
-        <div>selectedNav: <span className="text-blue-400">{selectedNav}</span></div>
-        <div>URL view param: <span className="text-purple-400">{searchParams.get('view')}</span></div>
-        <div className="mt-2 border-t border-gray-600 pt-2">
-          <div className="text-gray-400">NAV_ITEMS:</div>
+      {/* DEBUG PANEL - LARGER AND MORE VISIBLE */}
+      <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-[99999] bg-red-600 text-white p-6 rounded-lg text-lg font-mono shadow-2xl border-4 border-yellow-400">
+        <div className="font-bold mb-3 text-yellow-300 text-2xl">🐛 DEBUG INFO</div>
+        <div className="space-y-2 text-base">
+          <div>currentView: <span className="text-green-300 font-bold">{currentView}</span></div>
+          <div>selectedNav: <span className="text-blue-300 font-bold">{selectedNav}</span></div>
+          <div>URL view: <span className="text-purple-300 font-bold">{searchParams.get('view')}</span></div>
+        </div>
+        <div className="mt-3 border-t-2 border-white pt-3">
+          <div className="text-yellow-300 font-bold mb-2">Navigation Items:</div>
           {NAV_ITEMS.map((item, idx) => (
-            <div key={idx} className={selectedNav === idx ? 'text-yellow-400' : 'text-gray-500'}>
-              [{idx}] {item.key} - {item.label}
+            <div key={idx} className={`${selectedNav === idx ? 'text-yellow-300 font-bold text-lg' : 'text-gray-300'}`}>
+              [{idx}] {item.key} = "{item.label}" {selectedNav === idx ? '← SELECTED' : ''}
             </div>
           ))}
         </div>
