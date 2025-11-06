@@ -211,13 +211,17 @@ function HomeContent() {
   // Handle URL-based navigation
   useEffect(() => {
     const view = searchParams.get('view');
+    console.log('Navigation: URL view parameter =', view);
+    
     if (view === 'contact') {
       setCurrentView('contact');
       setSelectedNav(0); // Government Control Tower nav item
     } else if (view === 'citizen') {
+      console.log('Setting view to citizen');
       setCurrentView('citizen');
       setSelectedNav(1); // Citizen Services nav item
     } else if (view === 'alerts') {
+      // Alerts doesn't have a dedicated view yet, keep current view
       setSelectedNav(2); // Alerts & Notifications nav item
     } else if (view === 'knowledge') {
       setCurrentView('knowledge');
@@ -225,30 +229,35 @@ function HomeContent() {
     } else if (view === 'settings') {
       setCurrentView('settings');
       setSelectedNav(4); // Settings nav item
-    } else {
+    } else if (!view || view === '') {
+      // Only set default on initial load (no view parameter)
       setCurrentView('contact');
       setSelectedNav(0); // Default to Government Control Tower
+      router.replace('/?view=contact', { scroll: false });
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   // Navigation handler
   const handleNavigation = (navIndex: number, key: string) => {
+    console.log('handleNavigation called:', { navIndex, key });
     setSelectedNav(navIndex);
+    
     if (key === 'contact') {
       setCurrentView('contact');
-      router.push('/?view=contact');
+      router.push('/?view=contact', { scroll: false });
     } else if (key === 'citizen') {
+      console.log('Navigating to citizen services');
       setCurrentView('citizen');
-      router.push('/?view=citizen');
+      router.push('/?view=citizen', { scroll: false });
     } else if (key === 'alerts') {
       // Alerts view can be added later
-      router.push('/?view=alerts');
+      router.push('/?view=alerts', { scroll: false });
     } else if (key === 'knowledge') {
       setCurrentView('knowledge');
-      router.push('/?view=knowledge');
+      router.push('/?view=knowledge', { scroll: false });
     } else if (key === 'settings') {
       setCurrentView('settings');
-      router.push('/?view=settings');
+      router.push('/?view=settings', { scroll: false });
     }
   };
 
