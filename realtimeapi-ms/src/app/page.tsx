@@ -213,36 +213,15 @@ function HomeContent() {
   
   const [currentView, setCurrentView] = useState<'contact' | 'government' | 'health' | 'citizen' | 'bancassurance' | 'knowledge' | 'settings'>('contact');
 
-  // Log NAV_ITEMS on mount
-  useEffect(() => {
-    console.log('=== COMPONENT MOUNTED ===');
-    console.log('NAV_ITEMS mapping:', NAV_ITEMS.map((item, idx) => ({
-      index: idx,
-      key: item.key,
-      label: item.label
-    })));
-  }, []);
-
-  // Track currentView changes
-  useEffect(() => {
-    console.log('STATE CHANGE: currentView updated to:', currentView);
-  }, [currentView]);
-
-  // Track selectedNav changes
-  useEffect(() => {
-    console.log('STATE CHANGE: selectedNav updated to:', selectedNav);
-  }, [selectedNav]);
 
   // Handle URL-based navigation
   useEffect(() => {
     const view = searchParams.get('view');
-    console.log('Navigation: URL view parameter =', view);
     
     if (view === 'contact') {
       setCurrentView('contact');
       setSelectedNav(0); // Government Control Tower nav item
     } else if (view === 'citizen') {
-      console.log('Setting view to citizen');
       setCurrentView('citizen');
       setSelectedNav(1); // Citizen Services nav item
     } else if (view === 'alerts') {
@@ -264,14 +243,12 @@ function HomeContent() {
 
   // Navigation handler
   const handleNavigation = (navIndex: number, key: string) => {
-    console.log('handleNavigation called:', { navIndex, key });
     setSelectedNav(navIndex);
     
     if (key === 'contact') {
       setCurrentView('contact');
       router.push('/?view=contact', { scroll: false });
     } else if (key === 'citizen') {
-      console.log('Navigating to citizen services');
       setCurrentView('citizen');
       router.push('/?view=citizen', { scroll: false });
     } else if (key === 'alerts') {
@@ -2231,24 +2208,6 @@ ${customPrompt}`,
         <SplashScreen onClose={handleCloseSplash} />
       )}
       
-      {/* DEBUG PANEL - LARGER AND MORE VISIBLE */}
-      <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-[99999] bg-red-600 text-white p-6 rounded-lg text-lg font-mono shadow-2xl border-4 border-yellow-400">
-        <div className="font-bold mb-3 text-yellow-300 text-2xl">🐛 DEBUG INFO</div>
-        <div className="space-y-2 text-base">
-          <div>currentView: <span className="text-green-300 font-bold">{currentView}</span></div>
-          <div>selectedNav: <span className="text-blue-300 font-bold">{selectedNav}</span></div>
-          <div>URL view: <span className="text-purple-300 font-bold">{searchParams.get('view')}</span></div>
-        </div>
-        <div className="mt-3 border-t-2 border-white pt-3">
-          <div className="text-yellow-300 font-bold mb-2">Navigation Items:</div>
-          {NAV_ITEMS.map((item, idx) => (
-            <div key={idx} className={`${selectedNav === idx ? 'text-yellow-300 font-bold text-lg' : 'text-gray-300'}`}>
-              [{idx}] {item.key} = "{item.label}" {selectedNav === idx ? '← SELECTED' : ''}
-            </div>
-          ))}
-        </div>
-      </div>
-      
       <div className="min-h-screen flex items-center justify-center p-4 relative" style={{
           backgroundImage: `url(${wallpapers[currentWallpaperIndex]?.path || '/purple-gradient-bg.jpg'})`,
           backgroundSize: 'cover',
@@ -2284,10 +2243,7 @@ ${customPrompt}`,
               {NAV_ITEMS.map((item, idx) => (
                 <button
                   key={item.label}
-                  onClick={() => {
-                    console.log('BUTTON CLICKED:', { idx, key: item.key, label: item.label });
-                    handleNavigation(idx, item.key);
-                  }}
+                  onClick={() => handleNavigation(idx, item.key)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                     selectedNav === idx
                       ? 'bg-gray-800 text-white shadow-lg border-2 border-transparent bg-clip-padding relative'
@@ -2430,22 +2386,13 @@ ${customPrompt}`,
 
         {/* Column 3: Chat Area, Knowledge Base, or Settings */}
         <main className="flex-1 flex flex-col bg-white">
-          {(() => {
-            console.log('RENDERING: currentView =', currentView, 'selectedNav =', selectedNav);
-            
-            if (currentView === 'contact') {
-              console.log('RENDERING: ContactCenterDashboard');
-              return <ContactCenterDashboard />;
-            } else if (currentView === 'citizen') {
-              console.log('RENDERING: CitizenServicesInterface');
-              return <CitizenServicesInterface />;
-            } else if (currentView === 'knowledge') {
-              console.log('RENDERING: Knowledge Base');
-              return null; // Will be replaced with knowledge base JSX below
-            }
-            return null;
-          })()}
-          {currentView === 'knowledge' ? (
+          {currentView === 'contact' ? (
+            /* Government Control Tower Dashboard */
+            <ContactCenterDashboard />
+          ) : currentView === 'citizen' ? (
+            /* Citizen Services */
+            <CitizenServicesInterface />
+          ) : currentView === 'knowledge' ? (
             /* Knowledge Base Panel */
             <div className="flex-1 p-6">
               <div className="max-w-4xl">
