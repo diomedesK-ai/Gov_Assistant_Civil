@@ -175,8 +175,17 @@ function HomeContent() {
 
   useEffect(() => {
     setIsMounted(true);
-    setShowSplash(true);
+    // Only show splash screen once per session
+    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
+    if (!hasSeenSplash) {
+      setShowSplash(true);
+    }
   }, []);
+
+  const handleCloseSplash = () => {
+    setShowSplash(false);
+    sessionStorage.setItem('hasSeenSplash', 'true');
+  };
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [listening, setListening] = useState(false);
@@ -2185,7 +2194,7 @@ ${customPrompt}`,
     <>
       {/* Splash Screen */}
       {isMounted && showSplash && (
-        <SplashScreen onClose={() => setShowSplash(false)} />
+        <SplashScreen onClose={handleCloseSplash} />
       )}
       
       <div className="min-h-screen flex items-center justify-center p-4 relative" style={{
@@ -2247,7 +2256,10 @@ ${customPrompt}`,
           <div className="p-4 border-t border-gray-800">
             <div 
               className="flex items-center gap-3 p-3 rounded-xl bg-gray-900 cursor-pointer hover:bg-gray-800 transition-colors duration-200"
-              onClick={() => setShowSplash(true)}
+              onClick={() => {
+                sessionStorage.removeItem('hasSeenSplash');
+                setShowSplash(true);
+              }}
               title="Click to view Omni-Government Experience"
             >
               <div className="w-10 h-10 rounded-full bg-white border-2 border-transparent bg-clip-padding flex items-center justify-center text-gray-700 font-semibold relative">
