@@ -29,7 +29,6 @@ import {
 import ContactCenterDashboard from '@/components/ContactCenterDashboard';
 import ExperienceSelector from '@/components/ExperienceSelector';
 import WealthAdvisorInterface from '@/components/WealthAdvisorInterface';
-import BancassuranceInterface from '@/components/BancassuranceInterface';
 import CitizenServicesInterface from '@/components/CitizenServicesInterface';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import SplashScreen from '@/components/SplashScreen';
@@ -206,24 +205,17 @@ function HomeContent() {
     if (view === 'contact') {
       setCurrentView('contact');
       setSelectedNav(0); // Government Control Tower nav item
-    } else if (view === 'government') {
-      setCurrentView('government');
-      setSelectedNav(1); // Government Services nav item
-    } else if (view === 'health') {
-      setCurrentView('health');
-      setSelectedNav(2); // Health Portal nav item
     } else if (view === 'citizen') {
       setCurrentView('citizen');
-      setSelectedNav(3); // Citizen Services nav item
-    } else if (view === 'bancassurance') {
-      setCurrentView('bancassurance');
-      setSelectedNav(3); // Legacy Bancassurance nav item
+      setSelectedNav(1); // Citizen Services nav item
+    } else if (view === 'alerts') {
+      setSelectedNav(2); // Alerts & Notifications nav item
     } else if (view === 'knowledge') {
       setCurrentView('knowledge');
-      setSelectedNav(5); // Knowledge Base nav item
+      setSelectedNav(3); // Knowledge Base nav item
     } else if (view === 'settings') {
       setCurrentView('settings');
-      setSelectedNav(6); // Settings nav item
+      setSelectedNav(4); // Settings nav item
     } else {
       setCurrentView('contact');
       setSelectedNav(0); // Default to Government Control Tower
@@ -236,18 +228,12 @@ function HomeContent() {
     if (key === 'contact') {
       setCurrentView('contact');
       router.push('/?view=contact');
-    } else if (key === 'government') {
-      setCurrentView('government');
-      router.push('/?view=government');
-    } else if (key === 'health') {
-      setCurrentView('health');
-      router.push('/?view=health');
     } else if (key === 'citizen') {
       setCurrentView('citizen');
       router.push('/?view=citizen');
-    } else if (key === 'bancassurance') {
-      setCurrentView('bancassurance');
-      router.push('/?view=bancassurance');
+    } else if (key === 'alerts') {
+      // Alerts view can be added later
+      router.push('/?view=alerts');
     } else if (key === 'knowledge') {
       setCurrentView('knowledge');
       router.push('/?view=knowledge');
@@ -2383,9 +2369,6 @@ ${customPrompt}`,
           ) : currentView === 'citizen' ? (
             /* Citizen Services */
             <CitizenServicesInterface />
-          ) : currentView === 'bancassurance' ? (
-            /* Legacy Bancassurance Interface */
-            <BancassuranceInterface />
           ) : currentView === 'knowledge' ? (
             /* Knowledge Base Panel */
             <div className="flex-1 p-6">
