@@ -2226,6 +2226,22 @@ ${customPrompt}`,
         <SplashScreen onClose={handleCloseSplash} />
       )}
       
+      {/* DEBUG PANEL */}
+      <div className="fixed top-4 left-4 z-[9999] bg-black/90 text-white p-4 rounded-lg text-xs font-mono max-w-md">
+        <div className="font-bold mb-2 text-yellow-400">🐛 DEBUG INFO</div>
+        <div>currentView: <span className="text-green-400">{currentView}</span></div>
+        <div>selectedNav: <span className="text-blue-400">{selectedNav}</span></div>
+        <div>URL view param: <span className="text-purple-400">{searchParams.get('view')}</span></div>
+        <div className="mt-2 border-t border-gray-600 pt-2">
+          <div className="text-gray-400">NAV_ITEMS:</div>
+          {NAV_ITEMS.map((item, idx) => (
+            <div key={idx} className={selectedNav === idx ? 'text-yellow-400' : 'text-gray-500'}>
+              [{idx}] {item.key} - {item.label}
+            </div>
+          ))}
+        </div>
+      </div>
+      
       <div className="min-h-screen flex items-center justify-center p-4 relative" style={{
           backgroundImage: `url(${wallpapers[currentWallpaperIndex]?.path || '/purple-gradient-bg.jpg'})`,
           backgroundSize: 'cover',
