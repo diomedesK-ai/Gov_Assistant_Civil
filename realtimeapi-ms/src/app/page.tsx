@@ -170,6 +170,10 @@ function HomeContent() {
     };
   }, []);
 
+  // URL routing for navigation - declare early
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  
   const [showSplash, setShowSplash] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -189,6 +193,7 @@ function HomeContent() {
     setShowSplash(false);
     sessionStorage.setItem('hasSeenSplash', 'true');
   };
+  
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [listening, setListening] = useState(false);
@@ -206,9 +211,6 @@ function HomeContent() {
   const [promptInput, setPromptInput] = useState<string>('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
   
-  // URL routing for navigation
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const [currentView, setCurrentView] = useState<'contact' | 'government' | 'health' | 'citizen' | 'bancassurance' | 'knowledge' | 'settings'>('contact');
 
   // Log NAV_ITEMS on mount
