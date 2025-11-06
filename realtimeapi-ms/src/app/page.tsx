@@ -175,12 +175,15 @@ function HomeContent() {
 
   useEffect(() => {
     setIsMounted(true);
-    // Only show splash screen once per session
+    // Only show splash screen on initial load (no view parameter) and once per session
     const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
-    if (!hasSeenSplash) {
+    const view = searchParams.get('view');
+    
+    // Only show splash if: never seen before AND (no view param OR view is 'contact')
+    if (!hasSeenSplash && (!view || view === 'contact')) {
       setShowSplash(true);
     }
-  }, []);
+  }, [searchParams]);
 
   const handleCloseSplash = () => {
     setShowSplash(false);
